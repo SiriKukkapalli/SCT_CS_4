@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Typing Logger Project</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: white;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 60px auto;
+        text-align: center;
+        padding: 20px;
+    }
+
+    h1 {
+        margin-bottom: 5px;
+        color: #38bdf8;
+    }
+
+    p {
+        color: #cbd5e1;
+        margin-bottom: 20px;
+    }
+
+    textarea {
+        width: 90%;
+        height: 180px;
+        padding: 15px;
+        font-size: 16px;
+        border-radius: 12px;
+        border: none;
+        outline: none;
+        resize: none;
+        box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .buttons {
+        margin-top: 15px;
+    }
+
+    button {
+        padding: 10px 18px;
+        margin: 5px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .save {
+        background: #22c55e;
+        color: black;
+    }
+
+    .clear {
+        background: #ef4444;
+        color: white;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+    }
+
+    .output-box {
+        margin-top: 25px;
+        background: rgba(255,255,255,0.1);
+        padding: 15px;
+        border-radius: 12px;
+        text-align: left;
+        min-height: 80px;
+        white-space: pre-wrap;
+    }
+
+    footer {
+        margin-top: 30px;
+        font-size: 12px;
+        color: #94a3b8;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Typing Logger</h1>
+
+    <textarea id="box" placeholder="Start typing here..."></textarea>
+
+    <div class="buttons">
+        <button class="save" onclick="downloadLog()">Save Log</button>
+        <button class="clear" onclick="clearLog()">Clear</button>
+    </div>
+
+    <h3>Live Output</h3>
+    <div class="output-box" id="output">Nothing typed yet...</div>
+
+    <footer>Student Project</footer>
+</div>
+
+<script>
+    let box = document.getElementById("box");
+    let output = document.getElementById("output");
+
+    let log = "";
+
+    box.addEventListener("input", function () {
+        log = box.value;
+        output.innerText = log ? log : "Nothing typed yet...";
+    });
+
+    function downloadLog() {
+        let time = new Date().toLocaleString();
+
+        let content = "Typing Logger Report\n";
+        content += "Generated: " + time + "\n\n";
+        content += log;
+
+        let blob = new Blob([content], { type: "text/plain" });
+
+        let link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "typing_log.txt";
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        URL.revokeObjectURL(link.href);
+    }
+
+    function clearLog() {
+        log = "";
+        box.value = "";
+        output.innerText = "Nothing typed yet...";
+    }
+</script>
+
+</body>
+</html>
